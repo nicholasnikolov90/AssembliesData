@@ -41,6 +41,9 @@ header_results['Header/Branch'] = header_results.apply(lambda row: 'Header' if p
 header_results = header_results.drop(['Nodes', 'Header', 'Allowable', 'Seg', 'Stress'], axis = 1)
 
 print(header_results)
+header_results = header_results.pivot_table(index=['Point', 'Header/Branch'], columns='Category')
+
+print(header_results)
 
 #header_results = header_results.pivot_table(index=['Seg', 'Point'], columns='Category').drop(['Stress', 'Allowable'], axis = 1).sort_values(by='Point')
 #header_results.to_excel("test.xlsx")  
