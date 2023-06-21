@@ -19,7 +19,8 @@ import re
 
 #reads all the data from csv files
 code_stresses = pd.read_csv('100Acs.csv', usecols = ['Point', 'Seg', 'Category', 'Stress', 'Allowable'], low_memory=False).tail(-1)
-bend_nodes = pd.read_csv("nodes.csv")
+elbow_nodes = pd.read_csv("elbowNodes.csv")
+tee_nodes = pd.read_csv("teeNodes.csv")
 print(code_stresses)
 
 #Data clean up
@@ -37,7 +38,7 @@ allowables = allowables.set_index(['Point', 'Category', 'Allowable'])
 allowables = allowables.groupby(level=['Point', 'Allowable']).max().reset_index().drop(['Stress', 'Ratio'], axis = 1).set_index(['Point']).groupby(level='Point').max().sort_index()
 
 
-#turn general stress and code stresses into pivot tables
+#turn general stress and code stre  sses into pivot tables
 code_stresses = pd.pivot_table(code_stresses, values = 'Ratio', index = ['Point'], columns = 'Category')
 
 #Merge all results into one sheet
@@ -45,8 +46,8 @@ overall_results = code_stresses
 
 #RESULTS. 
 #Prints only the results for the nodes needed
-BendResults = overall_results.loc[bend_nodes['Nodes']]
-print(BendResults)
+elbow_results = overall_results.loc[elbow_nodes['Nodes']]
+print(elbow_results)
 
 #OUTPUT RESULTS TO EXCEL
-BendResults.to_excel("output.xlsx")  
+elbow_results.to_excel("output.xlsx")  
